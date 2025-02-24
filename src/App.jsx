@@ -1,12 +1,20 @@
+// App.jsx
 import React from 'react';
-import './style.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import Login from './Login';
+import Navbar from './Navbar';
 
 function App() {
   return (
-    <div>
-      <button onClick={() => console.log('Login clicked')}>Login</button>
-      {/* Render public and protected UI elements conditionally */}
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        
+      </Routes>
+    </BrowserRouter>
   );
 }
 
