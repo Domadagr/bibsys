@@ -1,6 +1,8 @@
 // Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -12,6 +14,28 @@ function Login() {
     // Send login request to your API
     // On success, you might store a token (preferably in an HttpOnly cookie)
     // and update your auth state, then navigate to a protected route.
+    
+
+    const response = await fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+            'user': username,
+            'password': password,
+        }),
+    });
+    console.log(response);
+
+    if (response.ok) {
+      const data = await response.json();
+      const tokenJWT = data.token;
+      
+      if (token) {
+        Cookies.set('token', tokenJWT, { expires: 30 });
+      }
+    }
     console.log('Logging in with', { username, password });
     navigate('/');
   };
