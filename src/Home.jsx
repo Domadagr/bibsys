@@ -1,34 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 
-
-function status() {
-    const [ status ] = useState([]);
-
-    const getStatus = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/api/status', {
-                method: 'GET',
-                headers: {
-                    'Content-type': 'application/json',
-                },       
-            });
-            console.log(response);
-        } catch (err) {
-            setError(err.message);
-        } 
-    }
-}
 
 const handleStatusClick = async (e) => {
     e.preventDefault();
 
+    // Important: credentials: 'include' to send the cookie in the request
     const response = await fetch('http://localhost:3000/api/status', {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-type': 'application/json',
         },       
     });
-    console.log(response);
+    const data = await response.json();
+
 }
 
 const Home = () => {

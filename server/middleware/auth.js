@@ -7,19 +7,25 @@ import { findUser, findUserType, checkUserId } from '../services/userService.js'
 const generateAccessToken = (async (username) => {
     const userId = await findUserType(username);
     const payload = { user: userId }
-    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: '120m' });
 })
 
 // Authenticate token using express.js middleware
 export function authenticateToken(requiredRole) {
     return async (req, res, next) => {
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1];
+        //const authHeader = req.headers['authorization'];
+        //const token = authHeader && authHeader.split(' ')[1];
+        
+        const token = req.cookies.token;
+        console.log("CookieParser: ", req.cookies.token);
+       if (!token)
+         return res.status(401).json({ message: 'Unauthorized: No token provided' });
+   
 
         if(token == null) return res.status(401).json({ message: 'Unauthorized: No token provided' });
 
         try {
-            const decoded = jwt.decode(token, process.env.TOKEN_SECRET);
+            const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
             req.user = decoded;
             const userId = decoded.user[0].id;
             const result = await checkUserId(userId);

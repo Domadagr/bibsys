@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 function Booklist() {
+    // State variables, react hooks.
+    // books holds current value of the state, the []
+    // setBooks updates the state.
+    // loading is the loading status, true means data is being fetched,
+    // false means data has been fetched.
     const [books, setBooks] = useState([]); 
     const [loading, setLoading] = useState(true); 
     const [error, setError] = useState(null); 

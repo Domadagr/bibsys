@@ -25,16 +25,19 @@ function Login() {
             'user': username,
             'password': password,
         }),
+        credentials: 'include',
     });
-    console.log(response);
 
     if (response.ok) {
       const data = await response.json();
-      const tokenJWT = data.token;
-      
-      if (token) {
-        Cookies.set('token', tokenJWT, { expires: 30 });
+      console.log("Login success: ", data.message);
+
+      /*
+      if (tokenJWT) {
+        Cookies.set('token', tokenJWT, { expires: 30, HttpOnly: true });
       }
+        */
+
     }
     console.log('Logging in with', { username, password });
     navigate('/');

@@ -38,5 +38,9 @@ router.delete('/deletebook/:id',
     ], 
     authenticateToken(['admin']), deleteBook);
 
+router.get('/time', (req, res) => {
+    res.json({ serverTime: new Date().toISOString() });
+    });
+
 export default router;
 

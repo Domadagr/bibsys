@@ -35,7 +35,16 @@ export const login = async (req, res) => {
         const authorized = await auth.loginHandler(user, pw);
         if (authorized) {
             const token = await auth.generateAccessToken(user);
-            res.status(200).send({ token });
+            //res.status(200).send({ token });
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', 
+                sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+                path: '/',
+                maxAge: 7200000,
+              });
+              console.log("res.cookie:", res.cookie.token);
+              res.status(200).json({ message: 'Logged in successfully' }).send();
         } else {
             res.status(401).send({ error: "Invalid credentials" });
         }
